@@ -96,8 +96,10 @@ ul{padding-left:20px}
       <div class="nav-group-items">
         <a class="nav-item active" href="#" data-page="intro">什么是 U-Claw</a>
         <a class="nav-item" href="#" data-page="quickstart">3 分钟快速上手</a>
-        <a class="nav-item" href="#" data-page="usb-run">从 U 盘运行</a>
-        <a class="nav-item" href="#" data-page="install-pc">安装到电脑</a>
+        <a class="nav-item" href="#" data-page="usb-run">从 U 盘运行（免安装）</a>
+        <a class="nav-item" href="#" data-page="install-pc">安装到电脑（桌面版）</a>
+        <a class="nav-item" href="#" data-page="dev-build">开发者搭建指南</a>
+        <a class="nav-item" href="#" data-page="mirrors">国内镜像源</a>
         <a class="nav-item" href="#" data-page="onboard">首次配置向导</a>
         <a class="nav-item" href="#" data-page="dashboard">网页控制台</a>
       </div>
@@ -183,58 +185,255 @@ ul{padding-left:20px}
 <!-- ===== 快速上手 ===== -->
 <div class="page" id="page-quickstart">
 <h1>3 分钟快速上手</h1>
+
+<h2>方式一：U 盘便携版（免安装）</h2>
 <div class="step"><div class="step-num">1</div><div class="step-content"><strong>插入 U 盘</strong><p style="color:var(--dim)">将 U-Claw U 盘插入电脑</p></div></div>
 <div class="step"><div class="step-num">2</div><div class="step-content"><strong>双击启动脚本</strong>
 <table><tr><th>系统</th><th>双击打开</th></tr>
-<tr><td>macOS</td><td><code>Mac-从U盘启动.command</code></td></tr>
-<tr><td>Windows</td><td><code>Windows-从U盘启动.bat</code></td></tr>
-<tr><td>Linux</td><td>终端运行 <code>bash Linux-从U盘启动.sh</code></td></tr></table>
+<tr><td>macOS</td><td><code>Mac-Start.command</code></td></tr>
+<tr><td>Windows</td><td><code>Windows-Start.bat</code></td></tr></table>
 </div></div>
-<div class="step"><div class="step-num">3</div><div class="step-content"><strong>首次配置</strong><p style="color:var(--dim)">选择 AI 模型 → 填写 API Key → 选择聊天平台</p></div></div>
-<div class="step"><div class="step-num">4</div><div class="step-content"><strong>开始使用</strong><p style="color:var(--dim)">浏览器自动打开控制台 <code>http://127.0.0.1:18789</code></p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>首次配置</strong><p style="color:var(--dim)">浏览器自动打开 Config.html → 选择 AI 模型 → 填写 API Key</p></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-content"><strong>开始使用</strong><p style="color:var(--dim)">控制台自动打开 <code>http://127.0.0.1:18789</code></p></div></div>
+
+<h2>方式二：桌面安装版</h2>
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>下载安装包</strong><p style="color:var(--dim)">从 <a href="https://github.com/dongsheng123132/u-claw/releases" target="_blank">GitHub Releases</a> 下载 DMG (Mac) 或 EXE (Windows)</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>安装并打开</strong><p style="color:var(--dim)">双击安装，打开 U-Claw App</p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>首次配置</strong><p style="color:var(--dim)">App 自动弹出配置页面 → 选择模型 → 填 API Key</p></div></div>
+
+<h2>方式三：开发者自己搭建</h2>
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>克隆代码</strong>
+<pre><code>git clone https://github.com/dongsheng123132/u-claw.git</code></pre>
+</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>一键安装</strong>
+<pre><code># 便携版
+cd u-claw/portable && bash setup.sh
+
+# 桌面版
+cd u-claw/u-claw-app && bash setup.sh</code></pre>
+<p style="color:var(--dim)">脚本自动从国内镜像下载 Node.js + 全部依赖，无需翻墙</p>
+</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>启动</strong>
+<pre><code># 便携版
+bash Mac-Start.command   # Mac
+Windows-Start.bat        # Windows
+
+# 桌面版
+npm run dev</code></pre>
+</div></div>
 </div>
 
 <!-- ===== 从 U 盘运行 ===== -->
 <div class="page" id="page-usb-run">
-<h1>从 U 盘运行（便携模式）</h1>
-<p>便携模式下，所有配置、API Key、聊天记录保存在 U 盘的 <code>portable-home/</code> 目录。换电脑插上 U 盘，配置还在。</p>
+<h1>从 U 盘运行（免安装便携模式）</h1>
+<p>便携模式下，所有配置、API Key、记忆保存在 U 盘的 <code>data/</code> 目录。换电脑插上 U 盘，配置还在。</p>
 <div class="tip"><strong>适合场景：</strong>老电脑、临时电脑、公司电脑、网吧、不想改本机环境</div>
 
 <h2>U 盘文件说明</h2>
 <table>
 <tr><th>文件</th><th>说明</th></tr>
-<tr><td><code>Mac-从U盘启动.command</code></td><td>macOS 一键启动（推荐）</td></tr>
-<tr><td><code>Mac-全部功能.command</code></td><td>macOS 完整功能菜单（17 项）</td></tr>
-<tr><td><code>Mac-安装到电脑.command</code></td><td>永久安装到 Mac</td></tr>
-<tr><td><code>Windows-从U盘启动.bat</code></td><td>Windows 一键启动</td></tr>
-<tr><td><code>Windows-全部功能.bat</code></td><td>Windows 完整功能菜单</td></tr>
-<tr><td><code>Windows-安装到电脑.bat</code></td><td>永久安装到 Windows</td></tr>
-<tr><td><code>帮助文档.html</code></td><td>本文档（浏览器打开）</td></tr>
+<tr><td><code>Mac-Start.command</code></td><td>macOS 一键启动（双击即可）</td></tr>
+<tr><td><code>Mac-Menu.command</code></td><td>macOS 功能菜单（8 项：配置、QQ、备份等）</td></tr>
+<tr><td><code>Windows-Start.bat</code></td><td>Windows 一键启动</td></tr>
+<tr><td><code>Windows-Menu.bat</code></td><td>Windows 功能菜单</td></tr>
+<tr><td><code>Config.html</code></td><td>首次配置页面（选模型、填 API Key）</td></tr>
+<tr><td><code>U-Claw.html</code></td><td>导航首页</td></tr>
+<tr><td><code>setup.sh</code></td><td>开发者搭建脚本（自动下载运行时）</td></tr>
 </table>
+
+<h2>目录结构</h2>
+<pre><code>portable/
+├── app/                    ← 运行时（约 2.3GB）
+│   ├── core/                  OpenClaw + 依赖 + QQ 插件
+│   └── runtime/
+│       ├── node-mac-arm64/    Mac Apple Silicon
+│       └── node-win-x64/     Windows 64-bit
+├── data/                   ← 用户数据（配置、记忆、备份）
+│   ├── .openclaw/             openclaw.json 配置文件
+│   ├── memory/                AI 记忆
+│   └── backups/               备份
+└── [启动脚本和HTML页面]</code></pre>
+
+<div class="warn"><strong>注意：</strong>目前支持 Mac Apple Silicon (M1-M4)。Windows 版开发中，Mac Intel 暂不支持。</div>
 </div>
 
 <!-- ===== 安装到电脑 ===== -->
 <div class="page" id="page-install-pc">
-<h1>安装到电脑（永久模式）</h1>
-<h2>方法一：从 U 盘安装</h2>
-<p>双击 <code>Mac-安装到电脑.command</code> 或 <code>Windows-安装到电脑.bat</code></p>
-<p style="color:var(--dim)">会将 Node.js + OpenClaw + 依赖复制到 <code>~/.uclaw/</code>，并添加到系统 PATH</p>
+<h1>安装到电脑（桌面版）</h1>
+<p>桌面版是 Electron 应用，安装后像普通 App 一样使用。自动管理 OpenClaw 网关的启停。</p>
 
-<h2>方法二：在线安装（需联网）</h2>
-<pre><code># macOS / Linux
-curl -fsSL https://u-claw.org/install.sh | bash
+<h2>方法一：下载安装包（推荐）</h2>
+<div class="step"><div class="step-num">1</div><div class="step-content">从 <a href="https://github.com/dongsheng123132/u-claw/releases" target="_blank">GitHub Releases</a> 下载：
+<table><tr><th>系统</th><th>文件</th></tr>
+<tr><td>Mac Apple Silicon (M1-M4)</td><td><code>U-Claw-x.x.x-arm64.dmg</code></td></tr>
+<tr><td>Mac Intel</td><td><code>U-Claw-x.x.x-x64.dmg</code></td></tr>
+<tr><td>Windows</td><td><code>U-Claw-x.x.x.exe</code></td></tr></table>
+</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content">双击安装，打开 U-Claw</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content">首次打开自动弹出配置页面，选择模型、填写 API Key</div></div>
 
-# Windows PowerShell
-iwr -useb https://u-claw.org/install.ps1 | iex
+<h2>方法二：开发者自己构建</h2>
+<pre><code>git clone https://github.com/dongsheng123132/u-claw.git
+cd u-claw/u-claw-app
 
-# npm 国内镜像
-npm install -g openclaw@latest --registry https://registry.npmmirror.com</code></pre>
+# Mac / Linux 一键安装（自动下载 Node.js + Electron + 依赖，全部国内镜像）
+bash setup.sh
 
-<h2>安装后使用</h2>
-<pre><code>openclaw onboard --install-daemon   # 首次配置
-openclaw dashboard                   # 打开控制台</code></pre>
+# Windows 一键安装
+setup.bat
+
+# 打包
+npm run build:mac-arm64  # Mac Apple Silicon → release/U-Claw-x.x.x-arm64.dmg
+npm run build:mac-x64    # Mac Intel → release/U-Claw-x.x.x-x64.dmg
+npm run build:win        # Windows → release/U-Claw-x.x.x.exe（需在 Windows 上运行）</code></pre>
+
+<h2>安装版 vs 便携版</h2>
+<table>
+<tr><th></th><th>便携版 (U盘)</th><th>安装版 (桌面App)</th></tr>
+<tr><td>安装</td><td>不需要，双击即用</td><td>需要安装</td></tr>
+<tr><td>数据位置</td><td>U 盘 <code>data/</code> 目录</td><td>系统 <code>~/Library/Application Support/U-Claw/</code></td></tr>
+<tr><td>换电脑</td><td>插 U 盘就能用</td><td>需要重新安装</td></tr>
+<tr><td>体验</td><td>终端 + 浏览器</td><td>原生 App 窗口</td></tr>
+<tr><td>适合</td><td>临时电脑、公共电脑</td><td>个人电脑长期使用</td></tr>
+</table>
 
 <div class="warn"><strong>安全提醒：</strong>共享电脑、公司电脑建议用 U 盘便携模式，不要安装到电脑。</div>
+</div>
+
+<!-- ===== 开发者搭建指南 ===== -->
+<div class="page" id="page-dev-build">
+<h1>开发者搭建指南</h1>
+<p>克隆代码库后，一键脚本自动配置完整开发环境。<strong>全部依赖从国内镜像下载，无需翻墙。</strong></p>
+
+<h2>代码库结构</h2>
+<div class="card">
+<p>这个代码库为以下 5 个目的服务：</p>
+<table>
+<tr><th>#</th><th>目的</th><th>对应目录</th></tr>
+<tr><td>1</td><td><strong>免安装版</strong>（U盘便携版）</td><td><code>portable/</code></td></tr>
+<tr><td>2</td><td><strong>安装版</strong>（桌面 Electron App）</td><td><code>u-claw-app/</code></td></tr>
+<tr><td>3</td><td><strong>国内环境适配</strong>（镜像、一键脚本）</td><td><code>setup.sh</code> / <code>setup.bat</code></td></tr>
+<tr><td>4</td><td><strong>维护工具</strong>（迁移、备份、诊断）</td><td><code>migrate.js</code>、Menu 脚本</td></tr>
+<tr><td>5</td><td><strong>文档 + 官网</strong></td><td><code>website/</code></td></tr>
+</table>
+<p style="color:var(--dim)">代码库只包含源代码和脚本（约 4MB），运行时依赖通过 setup.sh 自动下载。</p>
+</div>
+
+<h2>搭建便携版（U 盘版）</h2>
+<pre><code>git clone https://github.com/dongsheng123132/u-claw.git
+cd u-claw/portable
+
+# 一键搭建（自动下载 Node.js v22 + OpenClaw + QQ 插件）
+bash setup.sh
+
+# 启动测试
+bash Mac-Start.command   # Mac
+# 或双击 Windows-Start.bat  # Windows</code></pre>
+
+<div class="tip"><strong>setup.sh 自动完成：</strong>
+<ol>
+<li>检测系统（Mac ARM64 / Intel / Linux）</li>
+<li>从 npmmirror.com 下载 Node.js v22.14.0</li>
+<li>用国内镜像安装 OpenClaw + QQ 插件到 <code>app/</code></li>
+<li>整个过程约 1 分钟</li>
+</ol>
+</div>
+
+<h2>搭建桌面版（Electron App）</h2>
+<pre><code>cd u-claw/u-claw-app
+
+# Mac / Linux 一键安装
+bash setup.sh
+
+# Windows 一键安装
+setup.bat</code></pre>
+
+<div class="tip"><strong>setup.sh / setup.bat 自动完成：</strong>
+<ol>
+<li>检测或下载 Node.js v22（国内镜像）</li>
+<li>用国内镜像安装 npm 依赖 + Electron</li>
+<li>下载打包用 Node.js runtime</li>
+<li>询问是否立即启动</li>
+</ol>
+</div>
+
+<h3>打包分发</h3>
+<pre><code>npm run dev              # 开发模式运行
+npm run build:mac-arm64  # 打包 Mac ARM64 → release/*.dmg
+npm run build:mac-x64    # 打包 Mac Intel → release/*.dmg
+npm run build:win        # 打包 Windows → release/*.exe（需在 Windows 上）</code></pre>
+
+<h2>制作 U 盘</h2>
+<p>搭建完便携版后，把整个 <code>portable/</code> 目录复制到 U 盘即可：</p>
+<pre><code># 搭建完成后
+cp -R portable/ /Volumes/你的U盘/U-Claw/</code></pre>
+<p style="color:var(--dim)">U 盘容量建议 4GB 以上（便携版约 2.3GB）。</p>
+
+<h2>环境变量</h2>
+<table>
+<tr><th>变量</th><th>说明</th><th>默认值</th></tr>
+<tr><td><code>OPENCLAW_HOME</code></td><td>用户数据根目录</td><td><code>./data</code></td></tr>
+<tr><td><code>OPENCLAW_STATE_DIR</code></td><td>配置文件目录</td><td><code>./data/.openclaw</code></td></tr>
+<tr><td><code>OPENCLAW_CONFIG_PATH</code></td><td>配置文件路径</td><td><code>./data/.openclaw/openclaw.json</code></td></tr>
+</table>
+
+<h2>配置文件格式</h2>
+<pre><code>{
+  "gateway": {"mode": "local", "auth": {"token": "uclaw"}},
+  "agent": {
+    "model": "deepseek-chat",
+    "apiKey": "sk-xxx",
+    "baseUrl": "https://api.deepseek.com/v1"
+  },
+  "channels": {"qqbot": {"token": "appid:secret"}}
+}</code></pre>
+</div>
+
+<!-- ===== 国内镜像源 ===== -->
+<div class="page" id="page-mirrors">
+<h1>国内镜像源</h1>
+<p>U-Claw 的一键脚本默认使用国内镜像，<strong>无需翻墙</strong>即可完成全部安装。</p>
+
+<h2>npm 镜像</h2>
+<table>
+<tr><th>镜像</th><th>地址</th><th>说明</th></tr>
+<tr><td><strong>npmmirror（淘宝）</strong></td><td><code>https://registry.npmmirror.com</code></td><td>默认使用，速度最快</td></tr>
+<tr><td>腾讯云</td><td><code>https://mirrors.cloud.tencent.com/npm/</code></td><td>备选</td></tr>
+<tr><td>华为云</td><td><code>https://repo.huaweicloud.com/repository/npm/</code></td><td>备选</td></tr>
+<tr><td>中科大</td><td><code>https://npmreg.proxy.ustclug.org/</code></td><td>学术网络快</td></tr>
+</table>
+
+<h3>手动切换镜像</h3>
+<pre><code># 临时使用（推荐）
+npm install --registry=https://registry.npmmirror.com
+
+# 永久设置
+npm config set registry https://registry.npmmirror.com
+
+# 恢复官方源
+npm config set registry https://registry.npmjs.org</code></pre>
+
+<h2>Node.js 下载镜像</h2>
+<table>
+<tr><th>镜像</th><th>地址</th></tr>
+<tr><td><strong>npmmirror</strong></td><td><code>https://npmmirror.com/mirrors/node/</code></td></tr>
+<tr><td>清华大学</td><td><code>https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/</code></td></tr>
+<tr><td>中科大</td><td><code>https://mirrors.ustc.edu.cn/node/</code></td></tr>
+</table>
+
+<h2>Electron 下载镜像</h2>
+<p>setup.sh 已自动设置，手动设置方法：</p>
+<pre><code>export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+export ELECTRON_BUILDER_BINARIES_MIRROR="https://npmmirror.com/mirrors/electron-builder-binaries/"</code></pre>
+
+<h2>Git 克隆加速</h2>
+<pre><code># 方法一：GitHub 镜像（如果直连慢）
+git clone https://ghproxy.com/https://github.com/dongsheng123132/u-claw.git
+
+# 方法二：Gitee 镜像（如果有的话）
+git clone https://gitee.com/dongsheng123132/u-claw.git</code></pre>
+
+<div class="tip"><strong>提示：</strong>所有 setup.sh 脚本已内置国内镜像配置，正常情况下无需手动设置。此页面供需要自定义或排查问题的用户参考。</div>
 </div>
 
 <!-- ===== 首次配置 ===== -->
