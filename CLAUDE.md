@@ -91,4 +91,4 @@ Release artifacts go to GitHub Releases, not the repo.
 - Windows x64: 🚧 In development
 - Linux x86_64: ✅ Working (scripts + live USB mode)
 - Linux ARM64: ✅ Working (scripts)
-- Mac Intel (x64): ❌ Not yet
+- Mac Intel (x64): ✅ Working（portable 需先运行 setup.sh 下载 node-mac-x64）
