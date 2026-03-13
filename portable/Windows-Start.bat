@@ -104,8 +104,25 @@ echo   DO NOT close this window while using U-Claw!
 echo.
 
 cd /d "%CORE_DIR%"
+
+REM Check if model is configured - open Config.html for first time, dashboard for returning users
+set "HAS_MODEL=no"
+if exist "%DATA_DIR%\config.json" (
+    findstr /c:"agent" "%DATA_DIR%\config.json" >nul 2>&1 && set "HAS_MODEL=yes"
+)
+
+if "%HAS_MODEL%"=="yes" (
+    echo   Opening dashboard...
+    start "" http://127.0.0.1:%PORT%/#token=uclaw
+) else (
+    echo   First time - opening Config page...
+    start "" "%UCLAW_DIR%Config.html?port=%PORT%"
+)
+
+if not exist "%DATA_DIR%\logs" mkdir "%DATA_DIR%\logs"
 set "OPENCLAW_MJS=%CORE_DIR%\node_modules\openclaw\openclaw.mjs"
-"%NODE_BIN%" "%OPENCLAW_MJS%" gateway run --allow-unconfigured --force --port %PORT%
+echo   Log: %DATA_DIR%\logs\gateway.log
+"%NODE_BIN%" "%OPENCLAW_MJS%" gateway run --allow-unconfigured --force --port %PORT% 2>&1 | powershell -command "& { $input | Tee-Object -Append -FilePath '%DATA_DIR%\logs\gateway.log' }"
 
 echo.
 echo   OpenClaw stopped.
