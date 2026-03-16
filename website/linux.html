@@ -27,18 +27,87 @@
 </head>
 <body>
 
-<h1>🦞 U-Claw Linux 命令速查</h1>
+<h1>🦞 U-Claw Linux 使用指南 + 命令速查</h1>
 <p class="subtitle">点击命令即可选中，点复制按钮复制到剪贴板</p>
 
-<div class="tip" style="margin-bottom:20px;font-size:14px">
-    <strong>🌐 OpenClaw 控制台：</strong> <a href="http://127.0.0.1:18789/" target="_blank" style="color:var(--cyan)">http://127.0.0.1:18789/</a><br>
-    <strong>📖 完整教程：</strong> <a href="https://u-claw.org/guide.html" target="_blank" style="color:var(--cyan)">u-claw.org/guide.html</a><br>
-    <strong>🔑 SSH 快速设置：</strong> <a href="https://u-claw.org/ssh.html" target="_blank" style="color:var(--cyan)">u-claw.org/ssh.html</a>
+<!-- ===== 首次使用指南 ===== -->
+<h2 id="quickstart" style="color:var(--green);border-bottom-color:var(--green)">⚡ 首次使用（从这里开始）</h2>
+
+<div class="tip" style="margin-bottom:16px;font-size:14px">
+    U 盘启动进入 Ubuntu 桌面后，按以下顺序操作。每一步都有复制按钮，复制后粘贴到终端回车即可。
 </div>
 
-<div class="tip" style="margin-bottom:20px">
-    <strong>桌面快捷方式：</strong>桌面上有 7 个一键操作图标 —— 启动 OpenClaw、打开控制台、系统状态、启用 SSH、一键维护、帮助文档、安全关机。双击即用。
+<p style="color:var(--dim);font-size:13px;margin:12px 0 4px"><strong>第 1 步：连网</strong> — 点右上角 WiFi 图标，连接你的 WiFi</p>
+
+<p style="color:var(--dim);font-size:13px;margin:12px 0 4px"><strong>第 2 步：打开终端</strong></p>
+<div class="cmd-row">
+    <span class="cmd-desc">键盘快捷键</span>
+    <span class="cmd-code" style="color:var(--cyan);cursor:default">Ctrl + Alt + T</span>
 </div>
+
+<p style="color:var(--dim);font-size:13px;margin:12px 0 4px"><strong>第 3 步：安装 OpenClaw（仅首次，二选一）</strong></p>
+
+<p style="color:var(--dim);font-size:12px;margin:8px 0 4px">方案 A：官方一键安装（需要能访问外网）</p>
+<div class="cmd-row">
+    <span class="cmd-desc">官方安装</span>
+    <span class="cmd-code" onclick="copyThis(this)">curl -fsSL https://openclaw.ai/install.sh | bash</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+
+<p style="color:var(--dim);font-size:12px;margin:8px 0 4px">方案 B：国内镜像安装（推荐，不用翻墙）</p>
+<div class="cmd-row">
+    <span class="cmd-desc">国内安装</span>
+    <span class="cmd-code" onclick="copyThis(this)">sudo apt update && sudo apt install -y curl git && curl -fsSL https://registry.npmmirror.com/-/binary/node/v22.16.0/node-v22.16.0-linux-x64.tar.xz | sudo tar -xJ -C /usr/local --strip-components=1 && npm config set registry https://registry.npmmirror.com && sudo chown -R $USER /usr/local/lib/node_modules /usr/local/bin && npm install -g openclaw@latest</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+<p style="color:var(--dim);font-size:12px;margin-top:4px">安装完毕后验证：</p>
+<div class="cmd-row">
+    <span class="cmd-desc">确认安装</span>
+    <span class="cmd-code" onclick="copyThis(this)">openclaw --version</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+
+<p style="color:var(--dim);font-size:13px;margin:16px 0 4px"><strong>第 4 步：首次配置（选择 AI 模型 + 输入 API Key）</strong></p>
+<div class="cmd-row">
+    <span class="cmd-desc">配置向导</span>
+    <span class="cmd-code" onclick="copyThis(this)">openclaw onboard</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+<p style="color:var(--dim);font-size:12px;margin-top:4px">按提示选择模型（推荐 DeepSeek 或 Kimi），输入 API Key。<br>API Key 获取：<a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--cyan)">DeepSeek</a> | <a href="https://platform.moonshot.cn/console/api-keys" target="_blank" style="color:var(--cyan)">Kimi</a></p>
+
+<p style="color:var(--dim);font-size:13px;margin:16px 0 4px"><strong>第 5 步：启动 AI 助手</strong></p>
+<div class="cmd-row">
+    <span class="cmd-desc">启动网关</span>
+    <span class="cmd-code" onclick="copyThis(this)">openclaw gateway run --bind lan</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+<p style="color:var(--dim);font-size:12px;margin-top:4px">看到 <code style="color:var(--green)">listening on ws://0.0.0.0:18789</code> 就是启动成功了。<br>这个终端窗口不要关，网关在前台运行。</p>
+
+<p style="color:var(--dim);font-size:13px;margin:16px 0 4px"><strong>第 6 步：打开 OpenClaw 控制台</strong></p>
+<div class="cmd-row">
+    <span class="cmd-desc">自动打开浏览器</span>
+    <span class="cmd-code" onclick="copyThis(this)">openclaw dashboard</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+<p style="color:var(--dim);font-size:12px;margin-top:4px">新开一个终端窗口（Ctrl+Alt+T），输入上面的命令。<br>会自动打开 Firefox 并跳转到 OpenClaw 控制台（带认证 token）。<br>也可以手动在浏览器地址栏输入 <code style="color:var(--green)">localhost:18789</code></p>
+
+<div class="tip" style="margin-top:16px">
+    <strong>🎉 搞定！</strong>OpenClaw 控制台就是你的 AI 助手界面，可以直接和 AI 对话。<br><br>
+    <strong>下次开机只需 3 步：</strong><br>
+    1. 连 WiFi<br>
+    2. 终端输入 <code style="color:var(--green)">openclaw gateway run --bind lan</code><br>
+    3. 新终端输入 <code style="color:var(--green)">openclaw dashboard</code>
+</div>
+
+<div class="tip" style="margin-top:10px">
+    <strong>📎 其他页面：</strong>
+    <a href="https://u-claw.org/guide.html" target="_blank" style="color:var(--cyan)">完整教程</a> &nbsp;|&nbsp;
+    <a href="https://u-claw.org/ssh.html" target="_blank" style="color:var(--cyan)">SSH 远程控制设置</a>
+</div>
+
+<!-- ===== 分隔线 ===== -->
+<div style="border-top:2px solid var(--border);margin:32px 0 8px"></div>
+<p class="subtitle">以下是常用命令速查，日常使用时查阅</p>
 
 <div class="nav">
     <a href="#openclaw">OpenClaw</a>
@@ -67,13 +136,23 @@
     <button class="copy-btn" onclick="copyPrev(this)">复制</button>
 </div>
 <div class="cmd-row">
-    <span class="cmd-desc">启动网关</span>
-    <span class="cmd-code" onclick="copyThis(this)">openclaw gateway start</span>
+    <span class="cmd-desc">启动网关（前台）</span>
+    <span class="cmd-code" onclick="copyThis(this)">openclaw gateway run --bind lan</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+<div class="cmd-row">
+    <span class="cmd-desc">后台启动网关</span>
+    <span class="cmd-code" onclick="copyThis(this)">nohup openclaw gateway run --bind lan > /tmp/openclaw.log 2>&1 &</span>
     <button class="copy-btn" onclick="copyPrev(this)">复制</button>
 </div>
 <div class="cmd-row">
     <span class="cmd-desc">停止网关</span>
-    <span class="cmd-code" onclick="copyThis(this)">openclaw gateway stop</span>
+    <span class="cmd-code" onclick="copyThis(this)">pkill -f openclaw-gateway</span>
+    <button class="copy-btn" onclick="copyPrev(this)">复制</button>
+</div>
+<div class="cmd-row">
+    <span class="cmd-desc">打开控制台</span>
+    <span class="cmd-code" onclick="copyThis(this)">firefox http://localhost:18789/</span>
     <button class="copy-btn" onclick="copyPrev(this)">复制</button>
 </div>
 <div class="cmd-row">
