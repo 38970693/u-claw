@@ -296,3 +296,8 @@ bootable/
 - **Node.js**: v22.14.0 LTS，npmmirror.com（国内）或 nodejs.org
 - **OpenClaw**: npm latest，安装到 `/opt/u-claw/`
 - **完全独立**: 不引用仓库内 `portable/`、`u-claw-app/`、`website/` 的任何文件
+
+## 详细故障排除
+
+遇到问题请参考详细故障排除指南：
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - 完整的问题排查步骤和解决方案

@@ -33,7 +33,14 @@ REAL_HOME=$(eval echo "~$REAL_USER")
 # ── 2. Install system dependencies ──
 echo "[1/9] Installing system dependencies..."
 apt-get update -qq
-apt-get install -y -qq curl xdg-utils > /dev/null 2>&1
+
+# Live USB环境需要额外的包
+if grep -q "boot=casper" /proc/cmdline 2>/dev/null; then
+    echo "      Detected Live USB environment, installing additional packages..."
+    apt-get install -y -qq curl xdg-utils gvfs-bin libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils libatspi2.0-0 libuuid1 libgbm1 libasound2 > /dev/null 2>&1
+else
+    apt-get install -y -qq curl xdg-utils > /dev/null 2>&1
+fi
 echo "      Done."
 
 # ── 3. Create install directory ──
@@ -132,6 +139,21 @@ DESKTOP_FILE="$REAL_HOME/Desktop/openclaw.desktop"
 APPS_DIR="$REAL_HOME/.local/share/applications"
 mkdir -p "$APPS_DIR"
 
+# 检查是否是Live环境，如果是则创建更简单的启动脚本
+if grep -q "boot=casper" /proc/cmdline 2>/dev/null; then
+    echo "      Live USB detected, creating simplified launcher..."
+    # 创建直接启动脚本
+    cat > "$REAL_HOME/Desktop/Start-U-Claw.sh" << 'LAUNCHEREOF'
+#!/bin/bash
+echo "Starting U-Claw AI Assistant..."
+cd /opt/u-claw
+bash start-openclaw.sh
+LAUNCHEREOF
+    chmod +x "$REAL_HOME/Desktop/Start-U-Claw.sh"
+    chown "$REAL_USER:$REAL_USER" "$REAL_HOME/Desktop/Start-U-Claw.sh"
+fi
+
+# 仍然创建标准的.desktop文件
 cat > "$DESKTOP_FILE" << 'DESKTOPEOF'
 [Desktop Entry]
 Name=U-Claw AI Assistant
@@ -140,6 +162,7 @@ Exec=/opt/u-claw/start-openclaw.sh
 Terminal=true
 Type=Application
 Categories=Utility;
+Icon=utilities-terminal
 DESKTOPEOF
 
 cp "$DESKTOP_FILE" "$APPS_DIR/openclaw.desktop"
@@ -177,5 +200,19 @@ echo ""
 echo "  To start:  Double-click 'U-Claw AI Assistant' on desktop"
 echo "         or: bash $INSTALL_DIR/start-openclaw.sh"
 echo ""
+
+# 复制测试脚本
+if [[ -f "$SCRIPT_DIR/test-installation.sh" ]]; then
+    cp "$SCRIPT_DIR/test-installation.sh" "$INSTALL_DIR/test-installation.sh"
+    chmod +x "$INSTALL_DIR/test-installation.sh"
+    echo "  Test script: bash $INSTALL_DIR/test-installation.sh"
+    echo ""
+fi
+
+# 运行快速测试
+echo "Running quick installation test..."
+if [[ -f "$SCRIPT_DIR/test-installation.sh" ]]; then
+    bash "$SCRIPT_DIR/test-installation.sh" | tail -20
+fi
 echo "  First time? Configure your AI model in the browser after startup."
 echo "============================================"

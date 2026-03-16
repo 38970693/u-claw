@@ -18,14 +18,22 @@ export OPENCLAW_CONFIG_PATH="$DATA_DIR/.openclaw/openclaw.json"
 # --- Sanity checks ---
 if [[ ! -x "$NODE_BIN" ]]; then
     echo "[ERROR] Node.js not found at $NODE_BIN"
-    echo "Please run setup-openclaw.sh first."
+    echo ""
+    echo "Possible solutions:"
+    echo "1. Run setup script: sudo bash /opt/u-claw/setup-openclaw.sh"
+    echo "2. If on Live USB, the script might be at:"
+    echo "   /media/ubuntu/u-claw-linux/setup-openclaw.sh"
+    echo ""
     read -rp "Press Enter to exit..."
     exit 1
 fi
 
 if [[ ! -d "$CORE_DIR/node_modules/openclaw" ]]; then
     echo "[ERROR] OpenClaw not installed in $CORE_DIR"
-    echo "Please run setup-openclaw.sh first."
+    echo ""
+    echo "Please run the setup script first:"
+    echo "sudo bash /opt/u-claw/setup-openclaw.sh"
+    echo ""
     read -rp "Press Enter to exit..."
     exit 1
 fi
@@ -73,8 +81,16 @@ fi
 
 echo "Opening browser at http://localhost:$PORT ..."
 
-# Open browser after a short delay
-(sleep 3 && xdg-open "http://localhost:$PORT" 2>/dev/null) &
+# Open browser after a short delay - 检查是否在图形环境中
+if [[ -n "$DISPLAY" ]] && command -v xdg-open >/dev/null 2>&1; then
+    (sleep 3 && xdg-open "http://localhost:$PORT" 2>/dev/null) &
+    echo "      Browser will open automatically."
+else
+    echo ""
+    echo "[INFO] No graphical environment detected or xdg-open not available."
+    echo "       Please open http://localhost:$PORT in your browser manually."
+    echo ""
+fi
 
 "$NODE_BIN" "$OPENCLAW_ENTRY" gateway run \
     --allow-unconfigured \

@@ -56,15 +56,48 @@ if (Test-Path $VentoyZip) {
     Write-Host "[INFO] Ventoy archive already cached, skipping download." -ForegroundColor Green
 } else {
     Write-Host "[INFO] Downloading Ventoy v${VentoyVersion}..." -ForegroundColor Yellow
+    
+    # 检查网络连接
+    try {
+        $netTest = Test-NetConnection -ComputerName "github.com" -Port 443 -WarningAction SilentlyContinue
+        if (-not $netTest.TcpTestSucceeded) {
+            Write-Host "[WARN] Network connection to GitHub may be unstable." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "[WARN] Network check failed, continuing anyway..." -ForegroundColor Yellow
+    }
+    
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri $VentoyUrl -OutFile $VentoyZip -UseBasicParsing
-        Write-Host "[OK]   Download complete." -ForegroundColor Green
+        
+        # 设置超时和重试
+        $retryCount = 0
+        $maxRetries = 3
+        $downloaded = $false
+        
+        while ($retryCount -lt $maxRetries -and -not $downloaded) {
+            try {
+                if ($retryCount -gt 0) {
+                    Write-Host "[INFO] Retry $retryCount of $maxRetries..." -ForegroundColor Yellow
+                    Start-Sleep -Seconds 2
+                }
+                
+                Invoke-WebRequest -Uri $VentoyUrl -OutFile $VentoyZip -UseBasicParsing -TimeoutSec 30
+                $downloaded = $true
+                Write-Host "[OK]   Download complete." -ForegroundColor Green
+            } catch {
+                $retryCount++
+                if ($retryCount -eq $maxRetries) {
+                    throw $_
+                }
+            }
+        }
     } catch {
-        Write-Host "[ERROR] Download failed: $_" -ForegroundColor Red
+        Write-Host "[ERROR] Download failed after $maxRetries attempts: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host "        You can manually download from:" -ForegroundColor Yellow
         Write-Host "        https://github.com/ventoy/Ventoy/releases" -ForegroundColor Yellow
+        Write-Host "        Save to: $VentoyZip" -ForegroundColor Yellow
         Read-Host "Press Enter to exit"
         exit 1
     }
