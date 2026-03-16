@@ -1,4 +1,5 @@
-﻿@echo off
+@echo off
+setlocal EnableDelayedExpansion
 chcp 65001 >nul 2>&1
 title U-Claw - Portable AI Agent
 
@@ -39,11 +40,12 @@ echo.
 
 set "PATH=%NODE_DIR%;%NODE_DIR%\node_modules\.bin;%PATH%"
 
-REM Init data
+REM Init data directories
 if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
 if not exist "%STATE_DIR%" mkdir "%STATE_DIR%"
 if not exist "%DATA_DIR%\memory" mkdir "%DATA_DIR%\memory"
 if not exist "%DATA_DIR%\backups" mkdir "%DATA_DIR%\backups"
+if not exist "%DATA_DIR%\logs" mkdir "%DATA_DIR%\logs"
 
 REM Default config
 if not exist "%STATE_DIR%\openclaw.json" (
@@ -51,6 +53,11 @@ if not exist "%STATE_DIR%\openclaw.json" (
     echo {"gateway":{"mode":"local","auth":{"token":"uclaw"}}} > "%STATE_DIR%\openclaw.json"
     echo   Config created
     echo.
+)
+
+REM Sync config from legacy location
+if exist "%DATA_DIR%\config.json" if not exist "%STATE_DIR%\openclaw.json" (
+    copy "%DATA_DIR%\config.json" "%STATE_DIR%\openclaw.json" >nul
 )
 
 REM Check dependencies
@@ -65,16 +72,14 @@ if not exist "%CORE_DIR%\node_modules" (
     echo.
 )
 
-REM OpenClaw doesn't need a separate build step when installed via npm
-
 REM Find available port
 set PORT=18789
 :check_port
 netstat -an | findstr ":%PORT% " | findstr "LISTENING" >nul 2>&1
-if %errorlevel%==0 (
+if !errorlevel!==0 (
     echo   Port %PORT% in use, trying next...
     set /a PORT+=1
-    if %PORT% gtr 18799 (
+    if !PORT! gtr 18799 (
         echo   No available port 18789-18799
         pause
         exit /b 1
@@ -82,51 +87,40 @@ if %errorlevel%==0 (
     goto :check_port
 )
 
-echo   Starting OpenClaw on port %PORT%...
-echo.
+REM Read token from config
+set "TOKEN=uclaw"
+if exist "%STATE_DIR%\openclaw.json" (
+    for /f "tokens=*" %%t in ('"%NODE_BIN%" -e "try{const c=JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'));console.log((c.gateway&&c.gateway.auth&&c.gateway.auth.token)||'uclaw')}catch(e){console.log('uclaw')}" "%STATE_DIR%\openclaw.json"') do set "TOKEN=%%t"
+)
 
-REM Start Config Server in background
-echo   Starting Config Center on port 18788...
-set "CONFIG_SERVER=%UCLAW_DIR%config-server"
-start /B "" "%NODE_BIN%" "%CONFIG_SERVER%\server.js" >nul 2>&1
-
-REM Wait for config server to start
-timeout /t 2 /nobreak >nul
-
-REM Open both Config Center and Dashboard
-echo   Opening Config Center and Dashboard...
-timeout /t 1 /nobreak >nul
-
-REM Open Config Center (Node.js web UI)
-start "" http://127.0.0.1:18788/
-
-REM Open OpenClaw Dashboard
-start "" http://127.0.0.1:%PORT%/#token=uclaw
-
-echo   Browsers opened. Starting OpenClaw Gateway on port %PORT%...
+echo   Starting OpenClaw on port !PORT!...
 echo   DO NOT close this window while using U-Claw!
 echo.
 
 cd /d "%CORE_DIR%"
-
-REM Check if model is configured - open Config.html for first time, dashboard for returning users
-set "HAS_MODEL=no"
-if exist "%DATA_DIR%\config.json" (
-    findstr /c:"agent" "%DATA_DIR%\config.json" >nul 2>&1 && set "HAS_MODEL=yes"
-)
-
-if "%HAS_MODEL%"=="yes" (
-    echo   Opening dashboard...
-    start "" http://127.0.0.1:%PORT%/#token=uclaw
-) else (
-    echo   First time - opening Config page...
-    start "" "%UCLAW_DIR%Config.html?port=%PORT%"
-)
-
-if not exist "%DATA_DIR%\logs" mkdir "%DATA_DIR%\logs"
 set "OPENCLAW_MJS=%CORE_DIR%\node_modules\openclaw\openclaw.mjs"
 echo   Log: %DATA_DIR%\logs\gateway.log
-"%NODE_BIN%" "%OPENCLAW_MJS%" gateway run --allow-unconfigured --force --port %PORT% 2>&1 | powershell -command "& { $input | Tee-Object -Append -FilePath '%DATA_DIR%\logs\gateway.log' }"
+
+REM Check if model is configured
+set "HAS_MODEL=no"
+if exist "%STATE_DIR%\openclaw.json" (
+    findstr /c:"model" "%STATE_DIR%\openclaw.json" >nul 2>&1 && set "HAS_MODEL=yes"
+)
+if "!HAS_MODEL!"=="no" if exist "%DATA_DIR%\config.json" (
+    findstr /c:"model" "%DATA_DIR%\config.json" >nul 2>&1 && set "HAS_MODEL=yes"
+)
+
+REM Open browser after a short delay (gateway needs ~2-3s to start)
+if "!HAS_MODEL!"=="yes" (
+    echo   Opening dashboard in 3 seconds...
+    start /B "" cmd /c "timeout /t 3 /nobreak >nul && start http://127.0.0.1:!PORT!/#token=!TOKEN!"
+) else (
+    echo   First time setup - opening Config page in 3 seconds...
+    start /B "" cmd /c "timeout /t 3 /nobreak >nul && start %UCLAW_DIR%Config.html?port=!PORT!"
+)
+
+REM Start gateway (foreground, blocks until stopped)
+"%NODE_BIN%" "%OPENCLAW_MJS%" gateway run --allow-unconfigured --force --port !PORT! 2>&1 | powershell -command "& { $input | Tee-Object -Append -FilePath '%DATA_DIR%\logs\gateway.log' }"
 
 echo.
 echo   OpenClaw stopped.
