@@ -56,3 +56,22 @@
 - Live USB 每次重启后，除了持久化分区内的数据，其他都会重置
 - SSH server 需要每次重启后重新安装（除非持久化生效）
 - 持久化生效后，apt 安装的包会保留
+
+## 2026-03-17 修复：persistence.dat 未格式化导致启动失败
+
+### 问题
+- U 盘上的 `persistence.dat`（20GB）是空文件，没有 ext4 文件系统
+- `3-create-persistence.ps1` 因无可用标准 WSL，走了 Method B，只创建了稀疏空文件
+- Ventoy 启动 Ubuntu → 读 ventoy.json → 尝试挂载空的 persistence.dat → mount 失败 → 卡在 initramfs
+
+### 修复过程
+1. 用 docker-desktop WSL 的 `/sbin/mkfs.ext4` 格式化：
+   - 在 WSL 内创建稀疏文件：`dd if=/dev/zero of=/tmp/persistence.dat bs=1M count=0 seek=20480`
+   - 格式化：`/sbin/mkfs.ext4 -F -L casper-rw /tmp/persistence.dat`
+   - 复制到 C: → 移动到 E:（因为 docker-desktop WSL 无法直接访问 E: 盘）
+2. 验证：offset 1080 处读到 `53 EF`（little-endian `0xEF53`），确认 ext4 有效
+
+### 代码改进
+- `3-create-persistence.ps1` Method B 现在会尝试 docker-desktop WSL 格式化
+- 添加了 ext4 magic number 验证步骤
+- 只有在完全没有任何 WSL 时才降级为未格式化的空文件
