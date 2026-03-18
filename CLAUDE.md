@@ -16,10 +16,11 @@ U 盘 = 插上就能用
 
 The repo is NOT a "build tool" or "generator" — it IS the USB structure. `setup.sh` only fills in large deps that can't go in git. After `setup.sh`, the `portable/` folder is directly copyable to a USB drive.
 
-Three distribution forms:
+Four distribution forms:
 1. **Portable USB** (`portable/`): Run from USB on existing Mac/Windows, zero install.
 2. **Electron desktop app** (`u-claw-app/`): Install-to-computer version, packaged as DMG/EXE.
 3. **Bootable Linux USB** (`bootable/`): Ventoy + Ubuntu 24.04 — boots any x86_64 PC from USB, no OS needed.
+4. **One-line install** (`install/`): `curl | bash` or `irm | iex` — download and install from network, no USB needed.
 
 ## Development Commands
 
@@ -68,8 +69,14 @@ bootable/           Linux 可启动 U 盘模块（完全独立，不依赖其他
                     linux-setup/ — setup-openclaw.sh 安装到 /opt/u-claw/
                     独立仓库镜像: github.com/dongsheng123132/u-claw-linux
 
+install/            一键在线安装模块（curl | bash / irm | iex）
+                    install.sh (Mac/Linux) + install.ps1 (Windows)
+                    7 步流程: 系统检测 → Node.js → OpenClaw → QQ插件 → 技能 → 模型配置 → 启动脚本
+                    安装到 ~/.uclaw/，与 Mac-Install.command 结果相同
+
 website/            Static HTML deployed to u-claw.org via Vercel
                     vercel.json sets outputDirectory: "website"
+                    install.sh / install.ps1 — 复制自 install/，供 curl 下载
 ```
 
 Both portable and desktop versions auto-find a free port in range 18789–18799 and start the OpenClaw gateway. On first run, they detect whether a model is configured — if not, they open Config.html; otherwise, they open the dashboard.

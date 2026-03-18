@@ -97,6 +97,7 @@ ul{padding-left:20px}
       <div class="nav-group-items">
         <a class="nav-item active" href="#" data-page="intro">什么是 U-Claw</a>
         <a class="nav-item" href="#" data-page="quickstart">3 分钟快速上手</a>
+        <a class="nav-item" href="#" data-page="oneclick">⚡ 一键在线安装</a>
         <a class="nav-item" href="#" data-page="usb-run">从 U 盘运行（免安装）</a>
         <a class="nav-item" href="#" data-page="install-pc">安装到电脑（桌面版）</a>
         <a class="nav-item" href="#" data-page="dev-build">开发者搭建指南</a>
@@ -219,7 +220,18 @@ ul{padding-left:20px}
 <div class="page" id="page-quickstart">
 <h1>3 分钟快速上手</h1>
 
-<h2>方式一：U 盘便携版（免安装）</h2>
+<h2>方式一：一键在线安装（推荐）</h2>
+<div class="card" style="border-color:var(--cyan)">
+<p>不需要 U 盘，一行命令搞定一切：</p>
+<pre><code># Mac / Linux
+curl -fsSL https://u-claw.org/install.sh | bash
+
+# Windows (PowerShell 管理员)
+irm https://u-claw.org/install.ps1 | iex</code></pre>
+<p style="color:var(--dim);margin-bottom:0">自动下载 Node.js → 安装 OpenClaw → 10 个中国技能 → 交互式选模型 → 生成启动脚本。<br>全程国内镜像，约 2-5 分钟。<a href="#" data-page="oneclick">查看详细说明 →</a></p>
+</div>
+
+<h2>方式二：U 盘便携版（免安装）</h2>
 <div class="step"><div class="step-num">1</div><div class="step-content"><strong>插入 U 盘</strong><p style="color:var(--dim)">将 U-Claw U 盘插入电脑</p></div></div>
 <div class="step"><div class="step-num">2</div><div class="step-content"><strong>双击启动脚本</strong>
 <table><tr><th>系统</th><th>双击打开</th></tr>
@@ -230,12 +242,12 @@ ul{padding-left:20px}
 <div class="step"><div class="step-num">3</div><div class="step-content"><strong>首次配置</strong><p style="color:var(--dim)">浏览器自动打开 Config.html → 选择 AI 模型 → 填写 API Key</p></div></div>
 <div class="step"><div class="step-num">4</div><div class="step-content"><strong>开始使用</strong><p style="color:var(--dim)">控制台自动打开 <code>http://127.0.0.1:18789</code></p></div></div>
 
-<h2>方式二：桌面安装版</h2>
+<h2>方式三：桌面安装版</h2>
 <div class="step"><div class="step-num">1</div><div class="step-content"><strong>下载安装包</strong><p style="color:var(--dim)">从 <a href="https://github.com/dongsheng123132/u-claw/releases" target="_blank">GitHub Releases</a> 下载 DMG (Mac) 或 EXE (Windows)</p></div></div>
 <div class="step"><div class="step-num">2</div><div class="step-content"><strong>安装并打开</strong><p style="color:var(--dim)">双击安装，打开 U-Claw App</p></div></div>
 <div class="step"><div class="step-num">3</div><div class="step-content"><strong>首次配置</strong><p style="color:var(--dim)">App 自动弹出配置页面 → 选择模型 → 填 API Key</p></div></div>
 
-<h2>方式三：开发者自己搭建</h2>
+<h2>方式四：开发者自己搭建</h2>
 <div class="step"><div class="step-num">1</div><div class="step-content"><strong>克隆代码</strong>
 <pre><code>git clone https://github.com/dongsheng123132/u-claw.git</code></pre>
 </div></div>
@@ -255,6 +267,107 @@ Windows-Start.bat        # Windows
 # 桌面版
 npm run dev</code></pre>
 </div></div>
+</div>
+
+<!-- ===== 一键在线安装 ===== -->
+<div class="page" id="page-oneclick">
+<h1>⚡ 一键在线安装</h1>
+<p style="color:var(--dim);font-size:1.05em;margin-bottom:24px">不需要 U 盘，不需要 Git，一行命令装好 OpenClaw + 技能包 + 模型配置。全程国内镜像，无需翻墙。</p>
+
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="margin-top:0">Mac / Linux</h3>
+<pre><code>curl -fsSL https://u-claw.org/install.sh | bash</code></pre>
+<h3>Windows（PowerShell 管理员）</h3>
+<pre><code>irm https://u-claw.org/install.ps1 | iex</code></pre>
+<p style="color:var(--dim);margin-bottom:0">打开终端，复制粘贴，回车即可。整个过程约 2-5 分钟。</p>
+</div>
+
+<h2>安装流程（7 步全自动）</h2>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>系统检测</strong><p style="color:var(--dim)">自动识别 macOS / Linux / Windows，以及 CPU 架构（ARM64 / x64）</p></div></div>
+
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>安装 Node.js v22</strong><p style="color:var(--dim)">安装到 <code>~/.uclaw/runtime/</code>，不动系统环境。如果系统已有 v20+，自动复用</p></div></div>
+
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>安装 OpenClaw</strong><p style="color:var(--dim)">从 npmmirror 国内镜像下载安装到 <code>~/.uclaw/core/</code></p></div></div>
+
+<div class="step"><div class="step-num">4</div><div class="step-content"><strong>安装 QQ 插件</strong><p style="color:var(--dim)">自动安装 QQ 机器人插件（失败不影响主功能）</p></div></div>
+
+<div class="step"><div class="step-num">5</div><div class="step-content"><strong>安装 10 个中国技能</strong><p style="color:var(--dim)">小红书、B站、微博、微信公众号、知乎、抖音、国内搜索、翻译、天气、DeepSeek 助手</p></div></div>
+
+<div class="step"><div class="step-num">6</div><div class="step-content"><strong>选择 AI 模型</strong><p style="color:var(--dim)">中文交互菜单，支持 10 个模型。默认 DeepSeek，回车即选。输入 API Key 自动写入配置</p></div></div>
+
+<div class="step"><div class="step-num">7</div><div class="step-content"><strong>验证 + 生成启动脚本</strong><p style="color:var(--dim)">自动检查所有组件是否安装成功，生成 <code>start.command</code> (Mac) 或 <code>start.bat</code> (Win)</p></div></div>
+
+<h2>支持的 AI 模型</h2>
+
+<h3>国内模型（无需翻墙）</h3>
+<table>
+<tr><th>编号</th><th>模型</th><th>说明</th></tr>
+<tr><td>1</td><td><strong>DeepSeek</strong></td><td>⭐ 推荐，性价比最高，编程首选</td></tr>
+<tr><td>2</td><td>Kimi / 月之暗面</td><td>长文档，256K 上下文</td></tr>
+<tr><td>3</td><td>通义千问 / 阿里</td><td>有免费额度</td></tr>
+<tr><td>4</td><td>智谱 GLM</td><td>学术场景</td></tr>
+<tr><td>5</td><td>MiniMax</td><td>语音多模态</td></tr>
+<tr><td>6</td><td>豆包 / 火山引擎</td><td>火山引擎生态</td></tr>
+<tr><td>7</td><td>硅基流动</td><td>聚合多模型，一个 Key 切换</td></tr>
+</table>
+
+<h3>海外 + 本地模型</h3>
+<table>
+<tr><th>编号</th><th>模型</th><th>说明</th></tr>
+<tr><td>8</td><td>Claude</td><td>需翻墙</td></tr>
+<tr><td>9</td><td>GPT</td><td>需翻墙</td></tr>
+<tr><td>10</td><td>Ollama</td><td>本地模型，无需 API Key</td></tr>
+</table>
+
+<h2>安装后的目录结构</h2>
+<pre><code>~/.uclaw/
+├── runtime/node-{platform}/     # Node.js v22（不影响系统）
+├── core/                        # OpenClaw + QQ 插件
+│   └── node_modules/
+│       └── openclaw/skills/     ← 10 个中国技能
+├── data/
+│   ├── .openclaw/openclaw.json  ← 模型配置（API Key 在这里）
+│   ├── memory/                  ← AI 记忆
+│   └── backups/                 ← 备份
+├── start.command (Mac)          ← 双击启动
+└── start.bat (Windows)          ← 双击启动</code></pre>
+
+<h2>安装后怎么用</h2>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>启动</strong>
+<pre><code># Mac: 双击 ~/.uclaw/start.command 或
+bash ~/.uclaw/start.command
+
+# Windows: 双击 %USERPROFILE%\.uclaw\start.bat</code></pre>
+</div></div>
+
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>浏览器自动打开</strong><p style="color:var(--dim)">访问 <code>http://127.0.0.1:18789/#token=uclaw</code>，开始和 AI 对话</p></div></div>
+
+<div class="tip"><strong>改模型？</strong>编辑 <code>~/.uclaw/data/.openclaw/openclaw.json</code>，改完自动生效（热加载）</div>
+
+<h2>卸载</h2>
+<pre><code># Mac / Linux
+rm -rf ~/.uclaw
+
+# Windows (PowerShell)
+Remove-Item -Recurse -Force "$env:USERPROFILE\.uclaw"</code></pre>
+
+<h2>与其他安装方式对比</h2>
+<table>
+<tr><th>方式</th><th>需要 U 盘</th><th>需要网络</th><th>适合场景</th></tr>
+<tr><td><strong>⚡ 一键在线安装</strong></td><td>❌ 不需要</td><td>✅ 需要</td><td>自己电脑、有网环境</td></tr>
+<tr><td>U 盘便携版</td><td>✅ 需要</td><td>❌ 不需要</td><td>公司电脑、无网环境、装机</td></tr>
+<tr><td>桌面版 (Electron)</td><td>❌ 不需要</td><td>✅ 下载安装包</td><td>想要 App 体验</td></tr>
+<tr><td>Linux 启动盘</td><td>✅ 需要</td><td>❌ 不需要</td><td>无操作系统的裸机</td></tr>
+</table>
+
+<div class="warn"><strong>管道模式：</strong><code>curl | bash</code> 时无法交互，脚本自动跳过模型选择。启动后用 Config.html 页面配置即可。</div>
+
+<div class="footer-nav">
+<a href="#" data-page="quickstart">← 3 分钟快速上手</a>
+<a href="#" data-page="usb-run">从 U 盘运行 →</a>
+</div>
 </div>
 
 <!-- ===== 从 U 盘运行 ===== -->

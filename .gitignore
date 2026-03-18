@@ -35,3 +35,6 @@ u-claw-app/resources/runtime/
 
 # ── Bootable USB build artifacts (scripts are tracked, downloads are not) ──
 bootable/.download-cache/
+
+# ── Install module cache ──
+install/.download-cache/

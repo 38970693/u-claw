@@ -21,6 +21,22 @@
 
 > 📖 **[完整教程](https://u-claw.org/tutorial.html)** — 从零开始的手工安装指南、模型配置、聊天平台接入，小白也能看懂。
 
+### 一键安装（推荐）
+
+不需要 U 盘，一行命令直接装到电脑：
+
+```bash
+# Mac / Linux
+curl -fsSL https://u-claw.org/install.sh | bash
+
+# Windows (PowerShell 管理员)
+irm https://u-claw.org/install.ps1 | iex
+```
+
+自动完成: Node.js 下载 → OpenClaw 安装 → 10 个中国技能 → 模型配置 → 启动脚本生成。全程国内镜像，无需翻墙。
+
+详见 [`install/README.md`](install/README.md)。
+
 ### 快速开始：制作便携版 U 盘
 
 ```bash
@@ -193,6 +209,22 @@ This repo is a **tutorial + complete source code** for building an [OpenClaw](ht
 The codebase itself is the USB file skeleton. Run `setup.sh` to download large dependencies, then copy the entire `portable/` directory to a USB drive.
 
 > 📖 **[Full Tutorial](https://u-claw.org/tutorial.html)** — Step-by-step manual installation, model setup, chat platform integration.
+
+### One-Line Install (Recommended)
+
+No USB needed — install directly to your computer:
+
+```bash
+# Mac / Linux
+curl -fsSL https://u-claw.org/install.sh | bash
+
+# Windows (PowerShell as Admin)
+irm https://u-claw.org/install.ps1 | iex
+```
+
+Automatically downloads Node.js, installs OpenClaw, configures 10 Chinese-optimized skills, and sets up your AI model. All downloads use China mirrors.
+
+See [`install/README.md`](install/README.md) for details.
 
 ### Quick Start: Build a Portable USB
 
