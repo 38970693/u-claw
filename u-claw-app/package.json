@@ -1,9 +1,9 @@
 {
   "name": "u-claw",
   "version": "2.0.0",
-  "description": "U-Claw - AI Assistant Desktop App",
+  "description": "U-Claw - AI 助手桌面版，插上 U 盘就能用",
   "main": "src/main.js",
-  "author": "dongsheng <hefangsheng@gmail.com>",
+  "author": "贺方升 <hefangsheng@gmail.com> (https://u-claw.org)",
   "license": "MIT",
   "homepage": "https://u-claw.org",
   "scripts": {
@@ -19,7 +19,7 @@
   "build": {
     "appId": "org.u-claw.desktop",
     "productName": "U-Claw",
-    "copyright": "Copyright © 2026 U-Claw",
+    "copyright": "Copyright © 2026 贺方升 (u-claw.org)",
     "directories": {
       "output": "release"
     },
