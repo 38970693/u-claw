@@ -184,15 +184,15 @@ bash Mac-Start.command   # Mac 测试
 
 ### 🦞 寻找技术伙伴
 
-U-Claw 是一个快速成长的开源项目，目前已有不少商业合作机会。
+**U-Claw 虾盘** 是一个快速成长的开源项目，目前已有不少商业合作机会。但作为产品经理的我，还无力独自承接更多的可能性。
 
-我们正在寻找：
+正在寻找：
 - **技术伙伴** — 全栈 / Node.js / Electron / 脚本自动化
 - **资源合作** — 渠道、内容、社区运营
 
 如果你对 AI 工具的落地和商业化感兴趣，欢迎联系：
 
-- 微信: hecare888
+- 微信: **hecare888**
 - GitHub: [@dongsheng123132](https://github.com/dongsheng123132)
 - 官网: [u-claw.org](https://u-claw.org)
 
@@ -415,15 +415,15 @@ WeChat: **hecare888** (备注「U-Claw 远程」优先处理)
 
 ### 🦞 Looking for Partners
 
-U-Claw is a fast-growing open-source project with real commercial opportunities.
+**U-Claw** is a fast-growing open-source project with real commercial opportunities already on the table. But as a solo product manager, I can't capture them alone.
 
-We're looking for:
-- **Technical partners** — Full-stack / Node.js / Electron / scripting
-- **Resource partners** — Distribution, content, community
+Looking for:
+- **Technical partners** — Full-stack / Node.js / Electron / scripting & automation
+- **Resource partners** — Distribution channels, content creation, community ops
 
-If you're interested in AI tooling and commercialization, let's talk:
+If you're excited about bringing AI tools to market, let's talk:
 
-- WeChat: hecare888
+- WeChat: **hecare888**
 - GitHub: [@dongsheng123132](https://github.com/dongsheng123132)
 - Website: [u-claw.org](https://u-claw.org)
 
