@@ -46,7 +46,7 @@ if !errorlevel! neq 0 (
 echo   解压中...
 mkdir "%NODE_DIR%" 2>nul
 powershell -command "Expand-Archive -Path '%TEMP%\%NODE_ZIP%' -DestinationPath '%TEMP%\node-extract' -Force"
-xcopy /s /e /q /y "%TEMP%\node-%NODE_VER%-win-x64\*" "%NODE_DIR%\" >nul
+xcopy /s /e /q /y "%TEMP%\node-extract\node-%NODE_VER%-win-x64\*" "%NODE_DIR%\" >nul
 rmdir /s /q "%TEMP%\node-extract" 2>nul
 del "%TEMP%\%NODE_ZIP%" 2>nul
 
