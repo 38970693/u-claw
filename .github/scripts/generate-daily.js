@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 每日内容生成脚本
- * 调用 Claude API 生成每日小技巧和每日最佳案例
+ * 调用智谱 GLM API 生成每日小技巧和每日最佳案例
  * 写入 website/daily/data.json
  */
 
@@ -56,23 +56,24 @@ const USER_PROMPT = `请生成今天（${TODAY}）的内容，包含两部分：
   }
 }`;
 
-function callClaude(apiKey) {
+function callGLM(apiKey) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'glm-4-plus',
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: USER_PROMPT }]
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: USER_PROMPT }
+      ]
     });
 
     const options = {
-      hostname: 'api.anthropic.com',
-      path: '/v1/messages',
+      hostname: 'open.bigmodel.cn',
+      path: '/api/paas/v4/chat/completions',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Length': Buffer.byteLength(body)
       }
     };
@@ -87,7 +88,7 @@ function callClaude(apiKey) {
         }
         try {
           const parsed = JSON.parse(data);
-          const text = parsed.content[0].text.trim();
+          const text = parsed.choices[0].message.content.trim();
           // 提取 JSON（防止模型输出额外文字）
           const jsonMatch = text.match(/\{[\s\S]*\}/);
           if (!jsonMatch) throw new Error('No JSON found in response');
@@ -105,9 +106,9 @@ function callClaude(apiKey) {
 }
 
 async function main() {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.ZHIPU_API_KEY;
   if (!apiKey) {
-    console.error('ANTHROPIC_API_KEY not set');
+    console.error('ZHIPU_API_KEY not set');
     process.exit(1);
   }
 
@@ -115,7 +116,7 @@ async function main() {
 
   let content;
   try {
-    content = await callClaude(apiKey);
+    content = await callGLM(apiKey);
     console.log('API call successful');
   } catch (err) {
     console.error('API call failed:', err.message);

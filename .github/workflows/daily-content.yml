@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate daily content
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
         run: node .github/scripts/generate-daily.js
 
       - name: Commit and push changes
